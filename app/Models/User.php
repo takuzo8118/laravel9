@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    // 論理削除用にSoftDeletesを追記
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    // deleted_at論理削除用
+    protected $dates = ['deleted_at'];
     /**
-     * The attributes that are mass assignable.
+     * 一括割り当て可能な属性
      *
      * @var array<int, string>
      */
@@ -21,10 +24,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'image'
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * シリアル化のために非表示にする必要がある属性
      *
      * @var array<int, string>
      */
@@ -40,5 +44,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'deleted_at' => 'detetime'
     ];
 }

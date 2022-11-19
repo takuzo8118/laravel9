@@ -12,6 +12,13 @@
         @csrf
         @method('patch')
 
+        {{-- イメージ画像がnullの場合はNo imageの画像を入れるようにする --}}
+        {{-- <div>
+            <x-input-label for="name" :value="__('プロフィール画像:')" />
+            <x-text-input id="image" name="image" type="text" class="mt-1 block w-full" :value="old('image', $user->image)" required autofocus autocomplete="image" />
+            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+        </div> --}}
+
         <div>
             <x-input-label for="name" :value="__('名前')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />

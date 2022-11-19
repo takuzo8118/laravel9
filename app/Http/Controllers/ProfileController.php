@@ -35,10 +35,11 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
+        // DB保存処理
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        // リダイレクト時に更新メッセージと一緒に送信
+        return Redirect::route('profile.edit')->with('status', 'プロフィールを更新しました');
     }
 
     /**
@@ -56,7 +57,7 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
-
+        // こちらで物理削除→ソフトデリートに変更
         $user->delete();
 
         $request->session()->invalidate();
