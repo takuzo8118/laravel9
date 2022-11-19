@@ -13,10 +13,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// 未ログイン時にアクセスできるページ
 Route::get('/', function () {
-    return view('adminlte');
-});
+    return view('home.inquiry');
+})->name('inquiry');
+
+// 顧客管理画面のルーティング
+Route::get('/posts', function () {
+    return view('posts.index');
+})->middleware(['auth'])->name('posts');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
