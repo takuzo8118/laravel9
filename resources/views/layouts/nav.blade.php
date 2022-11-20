@@ -15,6 +15,10 @@
                     <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                         {{ __('ログイン') }}
                     </x-nav-link>
+                    {{-- 開発時にめんどいので定義 --}}
+                    <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                        {{ __('新規登録') }}
+                    </x-nav-link>
                 </div>
             </div>
         </div>
