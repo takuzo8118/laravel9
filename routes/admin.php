@@ -4,11 +4,11 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\Auth\NewPasswordController;
+use App\Http\Controllers\Admin\Auth\PasswordController;
+use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Admin\Auth\RegisteredUserController;
+use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -18,6 +18,7 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/register', [RegisteredUserController::class, 'store'])
                 ->middleware('guest:admin');
+
 
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest:admin')
@@ -34,16 +35,20 @@ Route::middleware('guest')->group(function () {
                 ->middleware('guest:admin')
                 ->name('password.email');
 
+
     Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+                ->middleware('guest:admin')
                 ->name('password.reset');
 
     Route::post('/reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.store');
+                ->middleware('guest:admin')
+                ->name('password.update');
+
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
-                ->middleware('guest:admin')
+                ->middleware('auth:admin')
                 ->name('verification.notice');
 
     Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
@@ -51,7 +56,7 @@ Route::middleware('auth')->group(function () {
                 ->name('verification.verify');
 
     Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware(['auth','throttle:6,1'])
+                ->middleware(['auth', 'throttle:6,1'])
                 ->name('verification.send');
 
     Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])
@@ -63,7 +68,7 @@ Route::middleware('auth')->group(function () {
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->middleware('guest:admin')
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+                ->middleware('auth:admin')
                 ->name('logout');
 });

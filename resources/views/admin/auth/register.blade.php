@@ -1,14 +1,14 @@
-<x-guest-layout>
+<x-admin-layout>
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                LOGO
             </a>
         </x-slot>
         {{-- 管理者の作成画面となるため送信先を変更 --}}
+        <h2 class="block text-center">管理者新規登録画面</h2>
         <form method="POST" action="{{ route('admin.register') }}">
             @csrf
-
             <!-- Name -->
             <div>
                 <x-input-label for="name" :value="__('名前')" />
@@ -61,4 +61,4 @@
             </div>
         </form>
     </x-auth-card>
-</x-guest-layout>
+</x-admin-layout>

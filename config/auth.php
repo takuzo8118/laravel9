@@ -72,7 +72,7 @@ return [
         // マルチ認証機能の実装のため追記
         'admins' => [
             'driver' => 'eloquent',
-            'model' => 'App\Models\Admin::class'
+            'model' => App\Models\Admin::class,
         ],
 
         // 'users' => [

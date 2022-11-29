@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::get('/posts', function () {
 // ログイン後にダッシュボードへ行くようにBreezeインストール時に定義されているもの
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware('auth')->name('dashboard');
 // 管理者でログインを行った場合はこちらにいくように設定したい
 
 // プロフィール編集などのルーティング
@@ -38,7 +39,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 // ルーティングが追加されていないので以下の書き方で変更を加えます。
-Route::prefix('admin')->name('admin.')->group(function(){
+Route::prefix('admin')->name('admin.')->group(function () {
+    // admin.dashboardのルーティングが存在しないため追記
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->middleware(['auth:admin'])->name('dashboard');
     // こちらで追加して読み込ませる
     require __DIR__.'/admin.php';
 });

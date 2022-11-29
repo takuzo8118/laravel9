@@ -54,6 +54,8 @@ services:
             - sail
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
+        # データベースを登録しておく箱の名前を追記
+        container_name: mysqldb
         depends_on:
             - mysql
         ports:

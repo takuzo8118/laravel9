@@ -17,7 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('admin.login');
+        return view('admin.auth.login');
     }
 
     /**
@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::ADMIN_HOME);
     }
 
     /**
@@ -43,12 +43,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        Auth::guard('web')->logout();
+        // 管理者ログアウト処理が動いてない気がするので明日見直し
+        // 純正のログアウト処理が知りたいかもしれない。
+        Auth::guard('admin')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('status', 'ログアウトしました');
+        return redirect('admin.auth.login')->with('status', '管理者ログアウトしました');
     }
 }

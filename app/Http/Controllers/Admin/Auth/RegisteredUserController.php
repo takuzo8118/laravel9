@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('admin.register');
+        return view('admin.auth.register');
     }
 
     /**
@@ -33,9 +33,10 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // 参考サイトのものに置き換え
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:admins',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -46,9 +47,10 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-        // 新規登録終了したら一旦ログインページにメッセージと共にリダイレクトする
-        Auth::login($user);
+        // 新規登録終了したらダッシュボードページにリダイレクトされる
+        // Auth::login($user);
+        Auth::guard('admin')->login($user);
 
-        return redirect(Auth('login'))->with('status', '新規登録が完了しました。ログインして下さい');
+        return redirect(RouteServiceProvider::ADMIN_HOME);
     }
 }

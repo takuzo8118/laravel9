@@ -49,6 +49,6 @@ class RegisteredUserController extends Controller
         // 新規登録終了したら一旦ログインページにメッセージと共にリダイレクトする
         Auth::login($user);
 
-        return redirect(Auth('login'))->with('status', '新規登録が完了しました。ログインして下さい');
+        return redirect(RouteServiceProvider::HOME);
     }
 }
