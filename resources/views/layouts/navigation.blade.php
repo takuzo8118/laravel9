@@ -82,13 +82,15 @@
         </div>
 
         <!-- Responsive Settings Options -->
+        {{-- ログインされている時だけ表示する --}}
+        @auth
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email  }}</div>
-            </div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email  }}</div>
+                </div>
 
-            <div class="mt-3 space-y-1">
+                <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('マイページへ') }}
                 </x-response-nav-link>
@@ -98,12 +100,13 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                    onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('ログアウト') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
         </div>
+        @endauth
     </div>
 </nav>

@@ -24,8 +24,8 @@
             <!-- Password -->
             <div class="mt-4">
                 <x-input-label for="password" :value="__('パスワード')" />
-
-                <x-text-input id="password" class="block mt-1 w-full"
+                {{-- パスワードだけ確認できるようにコンポーネントを別にしているが表示できているか確認できていない --}}
+                <x-password-input id="password" class="block mt-1 w-full"
                                 type="password"
                                 name="password"
                                 required autocomplete="current-password" />

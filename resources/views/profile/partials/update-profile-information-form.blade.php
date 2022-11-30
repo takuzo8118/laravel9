@@ -8,38 +8,55 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        </div>
+        <!-- 編集画面でのみプロフィール画像を入れることができるように実装する -->
+        <div class="">
+            <div>
+                <x-input-label for="name" :value="__('Name')" />
+                <x-text-input id="name" name="name" type="text" class="mt-1 block w-80" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+                <x-input-error class="mt-2" :messages="$errors->get('name')" />
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="email" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+                <x-input-label for="email" :value="__('Email')" />
+                <x-text-input id="email" name="email" type="email" class="mt-1 block w-80" :value="old('email', $user->email)" required autocomplete="email" />
+                <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-white">
-                        {{ __('Your email address is unverified.') }}"
+                @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+                    <div>
+                        <p class="text-sm mt-2 text-gray-800 dark:text-white">
+                            {{ __('Your email address is unverified.') }}"
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
-
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                            <button form="send-verification" class="underline text-sm text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-blue-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                                {{ __('Click here to re-send the verification email.') }}
+                            </button>
                         </p>
+
+                        @if (session('status') === 'verification-link-sent')
+                            <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                                {{ __('A new verification link has been sent to your email address.') }}
+                            </p>
+                        @endif
+                    </div>
+                @endif
+            </div>
+            <div class="mt-5">
+                <label for="image">
+                    <!-- 画像が登録されていない時に表示 -->
+                    @if ($user->image === null)
+                        <img class="rounded-lg shadow-xl object-contain w-40 h-40" src="{{ asset('default.png') }}" alt="プロフィール画像">
+                    @else
+                        <img class="rounded-lg shadow-xl object-contain w-40 h-40 hover:pointer" src="{{ Storage::url($user->image) }}" alt="プロフィール画像">
                     @endif
-                </div>
-            @endif
+                        <input id="image" name="file" type="file" class="mt-5 rounded-md" accept="image/png, image/jpeg">
+                </label>
+                {{-- @error('image')
+                    <span class="" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror --}}
+            </div>
         </div>
 
         <div class="flex items-center gap-4">

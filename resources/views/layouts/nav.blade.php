@@ -12,21 +12,22 @@
                     </a>
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('posts')" :active="request()->routeIs('customer')">
-                        {{ __('投稿一覧へ') }}
-                    </x-nav-link>
-                </div>
-
-
-                <!-- ログイン情報がなければ以下を表示 -->
-                @if (!Auth::check())
+                <!-- ログインしていたらこちらを表示 -->
+                @auth
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('posts')" :active="request()->routeIs('posts.index')">
+                            {{ __('投稿一覧へ') }}
+                        </x-nav-link>
+                    </div>
+                @endauth
+                <!-- ログインしていなかったらこちらを表示 -->
+                @guest
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
                             {{ __('新規登録') }}
                         </x-nax-link>
                     </div>
-                @endif
+                @endguest
 
 
             <!-- 各種設定画面 -->

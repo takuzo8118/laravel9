@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+               FishingSpot
             </a>
         </x-slot>
 
@@ -31,7 +31,7 @@
             <div class="mt-4">
                 <x-input-label for="password" :value="__('パスワード')" />
 
-                <x-text-input id="password" class="block mt-1 w-full"
+                <x-password-input id="password" class="block mt-1 w-full"
                                 type="password"
                                 name="password"
                                 required autocomplete="new-password" />
@@ -42,8 +42,8 @@
             <!-- パスワード確認 -->
             <div class="mt-4">
                 <x-input-label for="password_confirmation" :value="__('パスワード確認')" />
-
-                <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                {{-- ここのインプットタグも別のコンポーネントを参照 --}}
+                <x-password-input id="password_confirmation" class="block mt-1 w-full"
                                 type="password"
                                 name="password_confirmation" required />
 
